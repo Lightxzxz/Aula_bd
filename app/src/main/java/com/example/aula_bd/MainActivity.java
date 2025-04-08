@@ -1,6 +1,8 @@
 package com.example.aula_bd;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void limparCampo(){
+        editCod.setText("");
+        editNome.setText("");
+        editTel.setText("");
+        editEmail.setText("");
+        editNome.requestFocus();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +57,40 @@ public class MainActivity extends AppCompatActivity {
         btnSalvar = findViewById(R.id.btn2);
         btnExcluir = findViewById(R.id.btn3);
         lista = findViewById(R.id.lista);
+        listarPessoas();
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String conteudo = (String) lista.getItemAtPosition(position);
+                String codigo = conteudo.substring(0,conteudo.indexOf("-"));
+                Pessoas pessoa = bd.selecionarPessoa(Integer.parseInt(codigo));
+                editCod.setText(String.valueOf(pessoa.getCod()));
+                editNome.setText(pessoa.getNome());
+                editTel.setText(pessoa.getTel());
+                editEmail.setText(pessoa.getEmail());
+            }
+        });
 
+       btnLimpar.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               limparCampo();
+           }
+       });
+
+       btnSalvar.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               String codigo = editCod.getText().toString();
+               String nome = editNome.getText().toString();
+               String tel = editTel.getText().toString();
+               String email = editEmail.getText().toString();
+               if (nome.isEmpty()) editNome.setError("Campo Obrigatório!");
+               else if (codigo.isEmpty()){
+                   bd.addPessoa(new  Pessoas(nome, tel, email))
+               }
+           }
+       });
     }
 
 }
