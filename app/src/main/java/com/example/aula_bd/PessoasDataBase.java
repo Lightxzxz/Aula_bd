@@ -21,7 +21,7 @@ public class PessoasDataBase extends SQLiteOpenHelper{
     private static final String c_tel = "tel";
     private static final String c_email = "email";
 
-    public void AddPessoa (Pessoas pessoa){
+    public void addPessoa (Pessoas pessoa){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(c_nome,pessoa.getNome());

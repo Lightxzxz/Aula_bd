@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,19 +79,50 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
-       btnSalvar.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               String codigo = editCod.getText().toString();
-               String nome = editNome.getText().toString();
-               String tel = editTel.getText().toString();
-               String email = editEmail.getText().toString();
-               if (nome.isEmpty()) editNome.setError("Campo Obrigatório!");
-               else if (codigo.isEmpty()){
-                   bd.addPessoa(new  Pessoas(nome, tel, email))
-               }
-           }
-       });
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String codigo = editCod.getText().toString();
+                String nome = editNome.getText().toString();
+                String tel = editTel.getText().toString();
+                String email = editEmail.getText().toString();
+
+                if (nome.isEmpty()) {
+                    editNome.setError("Campo Obrigatório!");
+                } else if (codigo.isEmpty()) {
+                    bd.addPessoa(new Pessoas(nome, tel, email));
+                    Toast.makeText(MainActivity.this,
+                            "Adicionado com Sucesso!",
+                            Toast.LENGTH_SHORT).show();
+                    limparCampo();
+                    listarPessoas();
+                } else {
+                    bd.atualizarPessoa(new Pessoas(Integer.parseInt(codigo), nome, tel, email));
+                    Toast.makeText(MainActivity.this,
+                            "Atualizado com Sucesso!",
+                            Toast.LENGTH_SHORT).show();
+                    limparCampo();
+                    listarPessoas();
+                }
+            }
+        });
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String codigo = editCod.getText().toString();
+                if (codigo.isEmpty()) {
+                    Toast.makeText( MainActivity.this,  "Não há nada selecionado!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Pessoas pessoa = new Pessoas();
+                    pessoa.setCod(Integer.parseInt(codigo));
+                    bd.ApagarPessoa(pessoa);
+                    Toast.makeText(MainActivity.this, "Apagado com Sucesso!", Toast.LENGTH_SHORT).show();
+                    limparCampo();
+                    listarPessoas();
+                }
+            }
+        });
+
     }
 
 }
