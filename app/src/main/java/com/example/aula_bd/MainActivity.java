@@ -11,9 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 if (nome.isEmpty()) {
                     editNome.setError("Campo Obrigatório!");
                 } else if (codigo.isEmpty()) {
-                    bd.addPessoa(new Pessoas(nome, tel, email));
+                    bd.addPessoa(new Pessoas(0,nome, tel, email));
                     Toast.makeText(MainActivity.this,
                             "Adicionado com Sucesso!",
                             Toast.LENGTH_SHORT).show();
